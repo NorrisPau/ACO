@@ -99,31 +99,24 @@ distances = np.array([[np.inf, 2, 2, 5, 7],
                       [5, 8, 1, np.inf, 2],
                       [7, 2, 3, 2, np.inf]])
 
-#Put our cost matrix in same format
+#Put our cost matrix in same format as the example nparray distances above
 type(cost_matrix)
 distance_matrix = np.asarray(cost_matrix)
 distance_matrix = np.delete(distance_matrix, (0), axis=0) #delete first row cause it contains city names
 distance_matrix = np.delete(distance_matrix, (0), axis=1) #delete first column cause it contains city names
 
-#TODO: I try to replace all 0 with -inf to have the same format as the example matrix distances, because then the code should run
-
-#distance_matrix = np.where(distance_matrix == 0, -inf, distance_matrix)
-
 new_matrix = []
 for i in distance_matrix: #for each row in matrix
+    row = []
     for j in i: #for each value in row
-        row = []
-        if j == 0:
-            row.append(-inf)
+        if j == '0':
+            row.append(-np.inf)
         else:
-            row.append(j)
+            row.append(int(j))
     new_matrix.append(row)
 
+new_matrix = np.array(new_matrix)
 
-for i in distance_matrix: #loop through each row
-    np.where(i == 0, 1, i)
-
-
-ant_colony = AntColony(distance_matrix, 1, 1, 100, 0.95, alpha=1, beta=1)
+ant_colony = AntColony(new_matrix, 1, 1, 100, 0.95, alpha=1, beta=1)
 shortest_path = ant_colony.run()
 print ("shorted_path: {}".format(shortest_path))
