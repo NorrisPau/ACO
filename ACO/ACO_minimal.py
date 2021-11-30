@@ -1,9 +1,8 @@
 #ACO
-
-import csv
-with open(r'C:\Users\norap\OneDrive\Master Leuphana Universität\3. Semester\Machine Learning Lab\ACO\Sample Data Distance Matrix\Distance Matrix of All districts of Bangladesh.csv', newline='') as f:
-    reader = csv.reader(f)
-    cost_matrix = list(reader)
+#import csv
+#with open(r'C:\Users\norap\OneDrive\Master Leuphana Universität\3. Semester\Machine Learning Lab\ACO\Sample Data Distance Matrix\Distance Matrix of All districts of Bangladesh.csv', newline='') as f:
+    #reader = csv.reader(f)
+    #cost_matrix = list(reader)"""
 
 #Code from github: https://github.com/Akavall/AntColonyOptimization
 
@@ -11,6 +10,13 @@ import random as rn
 import numpy as np
 from numpy.random import choice as np_choice
 from numpy import inf
+import pandas as pd
+
+#Read in our minimal dataset
+dm = 'dm_minimal.txt'
+cost_matrix = pd.read_csv('C:/Users/norap/OneDrive/Master Leuphana Universität/3. Semester/Machine Learning Lab/ACO/' + dm,
+                 delimiter='\s+', header='infer')
+
 
 class AntColony(object):
 
@@ -34,7 +40,7 @@ class AntColony(object):
         self.n_best = n_best
         self.n_iterations = n_iterations
         self.decay = decay
-        self.alpha = alpha
+        self.alpha = alpha #alpha and beta act as weight on pheromone and distance respectively
         self.beta = beta
 
     def run(self):
@@ -102,14 +108,14 @@ distances = np.array([[np.inf, 2, 2, 5, 7],
 #Put our cost matrix in same format as the example nparray distances above
 type(cost_matrix)
 distance_matrix = np.asarray(cost_matrix)
-distance_matrix = np.delete(distance_matrix, (0), axis=0) #delete first row cause it contains city names
-distance_matrix = np.delete(distance_matrix, (0), axis=1) #delete first column cause it contains city names
-
+#distance_matrix = np.delete(distance_matrix, (0), axis=0) #delete first row cause it contains city names
+#distance_matrix = np.delete(distance_matrix, (0), axis=1) #delete first column cause it contains city names
+type(distance_matrix)
 new_matrix = []
 for i in distance_matrix: #for each row in matrix
     row = []
     for j in i: #for each value in row
-        if j == '0':
+        if j == 0:
             row.append(-np.inf)
         else:
             row.append(int(j))
@@ -117,6 +123,6 @@ for i in distance_matrix: #for each row in matrix
 
 new_matrix = np.array(new_matrix)
 
-ant_colony = AntColony(new_matrix, 1, 1, 100, 0.95, alpha=1, beta=1)
+ant_colony = AntColony(new_matrix, n_ants = 50, n_best = 1, n_iterations = 100, decay = 0.8, alpha=1, beta=1)
 shortest_path = ant_colony.run()
-print ("shorted_path: {}".format(shortest_path))
+print ("shortest_path: {}".format(shortest_path))
