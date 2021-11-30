@@ -92,12 +92,12 @@ class AntColony(object):
         move = np_choice(self.all_inds, 1, p=norm_row)[0]
         return move
 
-
+"""
 distances = np.array([[np.inf, 2, 2, 5, 7],
                       [2, np.inf, 4, 8, 2],
                       [2, 4, np.inf, 1, 3],
                       [5, 8, 1, np.inf, 2],
-                      [7, 2, 3, 2, np.inf]])
+                      [7, 2, 3, 2, np.inf]])"""
 
 #Put our cost matrix in same format as the example nparray distances above
 type(cost_matrix)
